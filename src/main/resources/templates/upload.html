@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<title>File Upload Example</title>
+<style>
+.bg-light{
+  	background-color:#E7E8D1 !important;
+  }
+</style>
+</head>
+<body class="bg-light" th:fragment="mainFragment">
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/operation1"> Home</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+	</nav>
+	`
+	<div class="container mt-5">
+
+		<div class="text-center mt-3">
+			<h2 class="mb-4">File Upload Example</h2>
+		</div>
+
+		<form id="uploadForm" th:action="@{/uploadFile}" method="post"
+			enctype="multipart/form-data" class="mb-4">
+			<div class="mb-3">
+				<label for="file" class="form-label">Select File to Upload:</label>
+				<input type="file" name="file" id="file" class="form-control"
+					required>
+			</div>
+			<button type="submit" class="btn btn-primary">Upload File</button>
+		</form>
+
+		<div id="downloadButtons" style="display: none;">
+            <div class="mb-4 download-button">
+                <a th:href="@{/download}" th:text="'Download Processed File'"
+                    class="btn btn-success"></a>
+            </div>
+
+            <div class="mb-4 download-button">
+                <a th:href="@{/downloadExcel}" th:text="'Download Excel File'"
+                    class="btn btn-success"></a>
+            </div>
+
+            <div class="mb-4 download-button">
+                <a th:href="@{/download-package}"
+                    th:text="'Download Card Packaging List'" class="btn btn-success"></a>
+            </div>
+        </div>
+		<div th:if="${error}" class="alert alert-danger">
+			<p th:text="${error}"></p>
+		</div>
+	</div>
+	<!-- Bootstrap JS and Popper.js (if needed) -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+	<script type="text/javascript">
+    document.getElementById("uploadForm").addEventListener("submit", function(event) {
+        // Prevent default form submission
+        event.preventDefault();
+
+        // Get form data
+        var formData = new FormData(this);
+
+        fetch("/uploadFile", {
+            method: "POST",
+            body: formData
+        })
+        .then(function(response) {
+            if (response.ok) {
+                // Successful upload
+                document.getElementById('downloadButtons').style.display = 'block'; // Show download buttons
+                return response.text();// Extract success message from response body
+            } else {
+                // Handle error response
+            	throw new Error("Please Check your file. Maybe it contains the wrong format!!");
+            }
+        })
+        
+        .then(function(message) {
+            // Display success or error message to the user
+            swal(message); 
+        })
+        
+        .catch(function(error) {
+            // Handle other errors
+            console.error("Error during file upload:", error);
+            swal("Error during file upload: " + error.message);
+            // Hide download buttons when upload fails
+            document.getElementById('downloadButtons').style.display = 'none';
+        });
+    });
+</script>
+
+</body>
+</html>

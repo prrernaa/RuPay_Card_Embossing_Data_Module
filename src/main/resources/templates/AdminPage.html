@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+    
+        body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%; /* / Ensure the body takes up the full height of the viewport / */
+    }
+    
+    /* / Set height of the container div to the full height of the viewport / */
+    .container {
+    	
+        height: 100%;	
+    }
+    
+   /*  / Set width and height of the table to fit within the container / */
+    table {
+        width: 100%;
+        height: 100%;
+    }
+    
+    
+   
+    
+    th, td {
+            border: 1px solid black; 
+            
+            text-align: left;
+        }
+     
+    
+
+    
+    .card {
+ /* / Set the width of the card / */
+  min-width: 1200px;
+  width: calc(100% - 30px);
+  border: 1px solid #ccc; /* / Add a border for visual clarity / */
+	box-sizing: border-box;
+	position: relative; 
+    left: 50%; 
+    transform: translateX(-50%);
+}
+
+
+.card-body {
+  width: 100%; 
+  height: 100%; 
+ /*  / padding: 20px; / / Add padding for spacing between the content and the card edges / */
+  
+}
+
+/* / Background color for table header / */
+.table thead th {
+    background-color:#A7BEAE;
+}
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color:#A7BEAE;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/admin"></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <span class="nav-link" id="loggedInUsername"></span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/usermanagement">User Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card card-container">
+                <div class="card-body" >
+                    <h2 class="text-center mb-4">Admin Signup Approval</h2>
+                    
+                    <div class="row " >
+                        <div class="col-md-12">
+                            <table class="table" border="1" id="pendingSignupsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th class="role-column">Role</th>
+                                        <th>Mobile Number</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    
+                                    
+                                </thead>
+                                <tbody>
+                                    <!-- Table body will be dynamically populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Dialog -->
+<div id="editDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDialogLabel">Edit Signup</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="username">
+                <div class="form-group">
+                    <label for="remark">Remark</label>
+                    <textarea class="form-control" id="remark" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="approve()">Approve</button>
+                <button type="button" class="btn btn-danger" onclick="reject()">Reject</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Font Awesome script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Function to fetch pending signups when the admin page is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchPendingSignups();
+    });
+
+    function fetchPendingSignups() {
+        fetch('/pendingSignups')
+            .then(response => response.json())
+            .then(data => {
+                // Log the received data for debugging
+                console.log('Received data:', data);
+                // Call function to update the table with the received data
+                updatePendingSignupsTable(data);
+            })
+            .catch(error => {
+                console.error('Error fetching pending signups:', error);
+                // Handle errors appropriately
+            });
+    }
+
+    function updatePendingSignupsTable(signups) {
+        // Get the table body element
+        var tbody = document.querySelector('#pendingSignupsTable tbody');
+        
+        // Clear the table body
+        tbody.innerHTML = '';
+
+        // Loop through the signups and create table rows
+        signups.forEach(signup => {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${signup.username}</td>
+                <td>${signup.email}</td>
+                <td class="role-column">${signup.userRole}</td>
+                <td>${signup.mobileNum}</td>
+                <td>
+                    <button class="btn btn-primary" onclick="openEditDialog('${signup.username}')">
+                        Edit
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Function to open edit dialog with the selected signup username
+    function openEditDialog(username) {
+        // Set the username in the hidden input field of the edit form
+        document.getElementById('username').value = username;
+        // Open the edit dialog
+        var editDialog = new bootstrap.Modal(document.getElementById('editDialog'));
+        editDialog.show();
+    }
+
+    // Function to send approval request to backend
+   // Function to send approval request to backend
+function approve() {
+    var username = document.getElementById('username').value;
+    var remark = document.getElementById('remark').value;
+    
+    if (!remark) {
+        alert("Remark is mandatory");
+        return;
+    }
+
+    // Prepare the form data
+    var formData = new URLSearchParams();
+    formData.append('username', username);
+    formData.append('remarks', remark);
+
+    // Send a POST request to the backend endpoint
+    fetch('/approve', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Reload the page or update UI as needed
+            window.location.reload();
+        } else {
+            throw new Error('Failed to approve signup');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors appropriately
+    });
+
+    // Close the edit dialog
+    var editDialog = bootstrap.Modal.getInstance(document.getElementById('editDialog'));
+    editDialog.hide();
+}
+
+// Function to send rejection request to backend
+function reject() {
+    var username = document.getElementById('username').value;
+    var remark = document.getElementById('remark').value;
+
+    if (!remark) {
+        alert("Remark is mandatory");
+        return;
+    }
+
+    // Prepare the form data
+    var formData = new URLSearchParams();
+    formData.append('username', username);
+    formData.append('remarks', remark);
+
+    // Send a POST request to the backend endpoint
+    fetch('/reject', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Reload the page or update UI as needed
+            window.location.reload();
+        } else {
+            throw new Error('Failed to reject signup');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors appropriately
+    });
+
+    // Close the edit dialog
+    var editDialog = bootstrap.Modal.getInstance(document.getElementById('editDialog'));
+    editDialog.hide();
+}
+
+</script>
+
+</body>
+
+</html>
+ 

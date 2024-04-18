@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Management</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+	
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+
+<!-- Include Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<style>
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	text-align: center;
+	margin-top: 20px;
+}
+
+table {
+	width: 80%;
+	margin: 20px auto;
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid #dddddd;
+	padding: 8px;
+	text-align: left;
+}
+
+td {
+	font-size: 12px; /* / Adjust font size to make it smaller / */
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
+#filter {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	padding: 4px 8px;
+	font-size: 14px;
+}
+
+#entryCount {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+body, html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	/* / Ensure the body takes up the full height of the viewport / */
+}
+
+/* / Set height of the container div to the full height of the viewport / */
+.container {
+	height: 100%;
+}
+
+/*  / Set width and height of the table to fit within the container / */
+table {
+	width: 100%;
+	height: 100%;
+}
+
+th, td {
+	border: 1px solid black;
+	text-align: left;
+}
+
+.card {
+	/* / Set the width of the card / */
+	min-width: 1200px;
+	width: calc(100% - 30px);
+	border: 1px solid #ccc; /* / Add a border for visual clarity / */
+	box-sizing: border-box;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.card-body {
+	width: 100%;
+	height: 100%;
+	/*  / padding: 20px; / / Add padding for spacing between the content and the card edges / */
+}
+
+/* / Background color for table header / */
+.table thead th {
+	background-color:#A7BEAE;
+	}
+
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/admin">Back</a>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item"><span class="nav-link"
+						id="loggedInUsername"></span></li>
+
+					<li class="nav-item"><a class="nav-link" href="/admin"
+						onclick="logout()"> <i class="fas fa-sign-out-alt"></i>
+							AdminPage
+					</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+				<div class="card card-container">
+					<div class="card-body">
+						<h1 class="text-center mb-4">User Management</h1>
+
+						<div id="entryCount"></div>
+
+						<div id="filter">
+							<label for="filter">Filter:</label> <select id="filterSelect">
+								<option value="all">All Users</option>
+								<option value="active">Active Users</option>
+								<option value="inactive">Inactive Users</option>
+							</select>
+						</div>
+						<!-- <div>
+							<label> "Search: "
+								<input type="search" class placeholder aria-controls="userTable">
+							</label>
+						</div> -->
+
+						<table id="userTable" class="table py-1" border="1">
+							<thead>
+								<tr>
+									<th>Username</th>
+									<th>Email</th>
+									<th>Mobile Number</th>
+									<th>User Role</th>
+									<th>Status</th>
+									<th>Remark</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody id="userTableBody">
+								<!-- User data will be dynamically added here -->
+							</tbody>
+						</table>
+
+						<!-- Edit Dialog Box -->
+
+						<div id="editDialog" title="Edit User" style="display: none;">
+							<form id="editForm" class="p-1 edit-dialog">
+								<div class="mb-1">
+									<label for="username" class="form-label">Username:</label> <input
+										type="text" id="username" name="username" class="form-control"
+										readonly>
+								</div>
+								<div class="mb-1">
+									<label for="email" class="form-label">Email:</label> <input
+										type="text" id="email" name="email" class="form-control"
+										readonly>
+								</div>
+								<div class="mb-1">
+									<label for="mobileNum" class="form-label">Mobile
+										Number:</label> <input type="text" id="mobileNum" name="mobileNum"
+										class="form-control" readonly>
+								</div>
+								<div class="mb-1">
+									<label for="userRole" class="form-label">User Role:</label> <input
+										type="text" id="userRole" name="userRole" class="form-control"
+										readonly>
+								</div>
+								<div class="mb-1">
+									<label for="status" class="form-label">Status:</label> <select
+										id="status" name="status" class="form-select">
+										<option value="active">Active</option>
+										<option value="inactive">Inactive</option>
+									</select>
+								</div>
+								<div class="mb-1">
+									<label for="remark" class="form-label">Remark:</label> <input
+										type="text" id="remark" name="remark" class="form-control"
+										required>
+								</div>
+							</form>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<script>
+        $(document).ready(function() {
+            // Initialize DataTables
+            var table = $('#userTable').DataTable();
+
+            // Function to fetch user data from the server based on filter
+            function fetchUsers(filter) {
+                var url = '/users';
+                if (filter !== 'all') {
+                    url += '/' + filter;
+                }
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        // Clear the existing table rows
+                        table.clear().draw();
+
+                        // Populate table rows with user data
+                        data.forEach(function(user) {
+                        	var actionCell;
+                        	if (user.active) {
+                        	    actionCell =' <i class="fas fa-edit edit-icon" onclick="openEditDialog(\'' + user.username + '\')" style="cursor: pointer;   color: blue;"></i>';
+                        	} else {
+                        	    actionCell = '<i class="fas fa-edit edit-icon"  style="cursor: pointer;"></i>';
+                        	}
+                            table.row.add([
+                                user.username,
+                                user.email,
+                                user.mobileNum,
+                                user.userRole,
+                                user.active ? 'Active' : 'Inactive',
+                                user.remark,
+                                actionCell
+                            ]).draw();
+                        });
+
+                        // Update entry count
+                        $('#entryCount').text('Total Entries: ' + table.rows().count());
+                    }
+                });
+            }
+
+            // Fetch users based on the default filter 'all'
+            fetchUsers('all');
+
+            // Add change event listener to filter dropdown
+            $('#filterSelect').change(function() {
+                fetchUsers($(this).val());
+            });
+
+            // Function to open the edit dialog
+           
+
+
+
+            // Function to submit changes
+            function submitChanges(username) {
+                var status = $('#status').val();
+                var remark = $('#remark').val();
+
+                // Validate remark
+                if (!remark) {
+                    alert("Remark is mandatory");
+                    return;
+                }
+
+                // Submit changes
+                $.ajax({
+                    url: '/users/' + username + '/edit',
+                    type: 'POST',
+                    data: { status: status, remark: remark },
+                    success: function() {
+                        alert("Changes submitted successfully");
+                        $('#editDialog').dialog("close");
+                        fetchUsers($('#filterSelect').val()); // Refresh user data with current filter
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
+                });
+            }
+        });
+        // Function to submit changes
+        function submitChanges(username) {
+            var status = $('#status').val();
+            var remark = $('#remark').val();
+
+            // Validate remark
+            if (!remark) {
+                alert("Remark is mandatory");
+                return;
+            }
+
+            // Submit changes
+            $.ajax({
+                url: '/users/' + username + '/edit',
+                type: 'POST',
+                data: { status: status, remark: remark },
+                success: function() {
+                    alert("Changes submitted successfully");
+                    $('#editDialog').dialog("close");
+                    fetchUsers($('#filterSelect').val()); // Refresh user data with current filter
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+        
+        
+        
+        
+        function openEditDialog(username) {
+            console.log('Opening edit dialog for username:', username); // Debugging statement
+
+            // Fetch user data by username
+            $.ajax({
+                url: '/users/'+username,
+                type: 'GET',
+                success: function(user) {
+                    if (user) {
+                        console.log('User data:', user); // Debugging statement
+
+                        // Populate dialog with user data
+                        $('#username').val(user.username);
+                        $('#email').val(user.email);
+                        $('#userRole').val(user.userRole);
+                        $('#mobileNum').val(user.mobileNum);
+                        $('#status').val(user.active ? 'active' : 'inactive');
+                        
+                        // Open the dialog
+                        $('#editDialog').dialog({
+                            modal: true,
+                            width: 400,
+                            buttons: {
+                                "Submit": function() {
+                                    submitChanges(username);
+                                },
+                                "Cancel": function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    } else {
+                        console.log('User not found'); // Debugging statement
+                        // Handle case where user is not found
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching user data:', error); // Debugging statement
+                    // Handle error
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!--  -->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>POLF Document</title>
+</head>
+<body  th:fragment="mainFragment">
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/operation2">  Home</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+	</nav>
+	<div class="container mt-5">
+	<div class="text-center mt-3">
+		<h2 class="mb-4">BANKING PERSONALIZATION WORK ORDER</h2>
+	</div>
+	<form style="font-size: 0.95rem;" th:action="@{/submitForm}"
+		method="post">
+
+		<!-- <div class="form-group row mb-3">
+			<label for="" class="col-sm-2 col-form-label">WORK ORDER NO :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="WORK ORDER NO"
+					name="workOrderNum" required>
+			</div>
+		</div> -->
+		<!-- <div class="form-group row mb-3">
+        <label for="inputWoDate" class="col-sm-2 col-form-label">WO DATE :</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputWoDate" name="workOrderDate" required>
+        </div>
+    </div> -->
+		<div class="form-group row mb-3">
+			<label for="inputPolfNum" class="col-sm-2 col-form-label">POLF
+				NO. :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="POLF NO." name="polfNum"
+					required>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputPolfQty" class="col-sm-2 col-form-label">POLF
+				QTY :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputPolfQty"
+					name="polfQty" required>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputCustomerPO" class="col-sm-2 col-form-label">CUSTOMER
+				PO/ORDER :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputCustomerPO"
+					name="customerPoOrder" required>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputCustomerName" class="col-sm-2 col-form-label">CUSTOMER
+				NAME :</label>
+			<div class="col-sm-10">
+				<select id="inputCustomerName" name="customerName"
+					style="width: 100%; height: 40px;" >
+					<option value="Aurionpro Solutions Limited">Aurionpro Solutions Limited</option>
+					<!-- <option value="Aurionpro Solutions Limited">Aurionpro Solutions Limited</option> -->
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputProductName" class="col-sm-2 col-form-label">PRODUCT
+				NAME :</label>
+			<div class="col-sm-10">
+				<select id="inputProductName" name="productName"
+					style="width: 100%; height: 40px;" required>
+					<option value="">Please Select product name</option>
+					<option value="AU Small Finance Bank ltd_HR Roadways Perso Card">AU
+						Small Finance Bank ltd_HR Roadways Perso Card</option>
+					<option value="AU Small Finance Bank ltd_HR Roadways Insta Card">AU
+						Small Finance Bank ltd_HR Roadways Insta Card</option>
+					<option value="AU Small Finance Bank ltd_HR Happy Card Perso Card">AU
+						Small Finance Bank ltd_HR Happy Card Perso Card</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputCustArtworkRef" class="col-sm-2 col-form-label">CUST
+				ARTWORK REF :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputCustArtworkRef"
+					name=custArtworkRef required>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputSchemeAuthority" class="col-sm-2 col-form-label">SCHEME
+				AUTHORITY :</label>
+			<div class="col-sm-10">
+				<select id="inputSchemeAuthority" name="schemeAuthority"
+					style="width: 100%; height: 40px;" required>
+					<option value="">Please Select Scheme Authority</option>
+					<option value="RUPAY">RUPAY</option>
+					<option value="VISA">VISA</option>
+					<option value="MASTERCARD">MASTERCARD</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputChipType" class="col-sm-2 col-form-label">CHIP
+				TYPE :</label>
+				
+			<div class="col-sm-10">
+				<select id="inputChipType" name="chipType"
+					style="width: 100%; height: 40px;" >
+					<option value="NXP JCOP 4 P71">NXP JCOP 4 P71</option>
+				</select>
+			</div>
+			<!-- <div class="col-sm-10">
+				<input type="text" class="form-control" id="inputChipType"
+					name="chipType" value="NXP JCOP 4 P71" disabled>
+			</div> -->
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputCardType" class="col-sm-2 col-form-label">CARD
+				TYPE :</label>
+			<div class="col-sm-10">
+				<select id="inputCardType" name="cardType"
+					style="width: 100%; height: 40px;" >
+					<option value="Chip+Magstripe">Chip+Magstripe</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputElectricalInfo" class="col-sm-2 col-form-label">ELECTRICAL
+				INFO :</label>
+			<div class="col-sm-10">
+				<select id="inputElectricalInfo" name="electricalInfo"
+					style="width: 100%; height: 40px;" >
+					<option value="Chip+Magstripe">Chip+Magstripe</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputGraphicalInfo" class="col-sm-2 col-form-label">GRAPHICAL
+				INFO :</label>
+			<div class="col-sm-10">
+				<select id="inputGraphicalInfo" name="graphicalInfo"
+					style="width: 100%; height: 40px;" required>
+					<option value="">Please Select Graphical Info</option>
+					<option value="Intend+CVV">Intend+CVV</option>
+					<option value="Emboss+CVV">Emboss+CVV</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputFoilRibbonInfo" class="col-sm-2 col-form-label">FOIL/RIBBON
+				INFO :</label>
+			<div class="col-sm-10">
+				<select id="inputFoilRibbonInfo" name="foilInfo"
+					style="width: 100%; height: 40px;" required>
+					<option value="">Please Select foil/ribbon info</option>
+					<option value="WHITE">WHITE</option>
+					<option value="BLACK">BLACK</option>
+					<option value="SILVER">SILVER</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputBinNumber" class="col-sm-2 col-form-label">BIN
+				NUMBER :</label>
+			<div class="col-sm-10">
+				<select id="inputBinNumber" name="binNumber"
+					style="width: 100%; height: 40px;" >
+					<option value="817551">817551</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputPersoBatchName" class="col-sm-2 col-form-label">PERSO
+				BATCH NAME :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputPersoBatchName"
+					name="persoBatchName" required>
+			</div>
+		</div>
+		<!-- empty label  -->
+		<!-- <div class="form-group row mb-3">
+			<label class="col-sm-2 col-form-label"></label>
+			Empty label
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputPersoBatchName2"
+					name="PERSO_BATCH_NAME">
+			</div>
+		</div> -->
+		<div class="form-group row mb-3">
+			<label for="inputBatchQty" class="col-sm-2 col-form-label">BATCH
+				QTY :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputBatchQty"
+					name="batchQty" required>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputNoOfEnvelopes" class="col-sm-2 col-form-label">NO.
+				OF ENVELOPES :</label>
+			<div class="col-sm-10">
+				<select id="inputNoOfEnvelopes" name="noOfEnvelopes"
+					style="width: 100%; height: 40px;" required>
+					<option value="NA">NA</option>
+					
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputNoOfCarriers" class="col-sm-2 col-form-label">NO.
+				OF CARRIERS :</label>
+			<div class="col-sm-10">
+				<select id="inputNoOfCarriers" name="noOfCarriers"
+					style="width: 100%; height: 40px;" required>
+					<option value="NA">NA</option>
+					
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputNoOfCards" class="col-sm-2 col-form-label">NO.
+				OF CARDS :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputNoOfCards"
+					name="numOfCards" required>
+			</div>
+		</div>
+
+
+		<div class="form-group row mb-3">
+			<label for="inputRemarks" class="col-sm-2 col-form-label">REMARKS
+				:</label>
+			<div class="col-sm-10">
+				<select id="inputRemarks" name="remarks"
+					style="width: 100%; height: 40px;" required>
+					<option value="">Please Select remarks</option>
+					<option value="WITH MAILER">WITH MAILER</option>
+					<option value="NO MAILER">NO MAILER</option>
+					<option value="SAMPLE VOID CARDS FOR NPCI">SAMPLE VOID
+						CARDS FOR NPCI</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputPreparedBy" class="col-sm-2 col-form-label">PREPARED
+				BY :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputPreparedBy"
+					name="preparedBy" placeholder="USERNAME" required>
+			</div>
+		</div>
+		<!-- <div class="form-group row mb-3">
+    <label for="inputDateTime" class="col-sm-2 col-form-label">DATE/TIME :</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputDateTime" name="dateTime">
+    </div>
+</div> -->
+		<!-- <div class="form-group row mb-3">
+			<label for="inputVerifiedBy" class="col-sm-2 col-form-label">VERIFIED
+				BY :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputVerifiedBy"
+					name="verifiedBy">
+			</div>
+		</div> -->
+		<!-- <div class="form-group row mb-3">
+			<label for="inputIssueNum" class="col-sm-2 col-form-label">ISSUE
+				NUMBER :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputIssueNum"
+					name="issueNum">
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputRevNum" class="col-sm-2 col-form-label">REV
+				NO :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputRevNum"
+					name="revNum">
+			</div>
+		</div>
+		<div class="form-group row mb-3">
+			<label for="inputIssueDate" class="col-sm-2 col-form-label">ISSUE
+				DATE :</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputIssueDate"
+					name="issueDate">
+			</div>
+		</div> -->
+
+
+		<!-- Add other form fields if needed -->
+
+		<div style="align-items: center; text-align: center;">
+			<button type="submit" class="btn btn-primary">Submit</button>
+			
+		</div>
+	</form>
+	</div>
+
+
+</body>
+</html>
+
+

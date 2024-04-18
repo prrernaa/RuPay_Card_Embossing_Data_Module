@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Example</title>
+</head>
+<body>
+<%    
+  String filename = "output.txt";   
+  String filepath = "../processed";   
+  response.setContentType("APPLICATION/OCTET-STREAM");   
+  response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
+  
+  java.io.FileInputStream fileInputStream=new java.io.FileInputStream(filepath + filename);  
+            
+  int i;   
+  while ((i=fileInputStream.read()) != -1) {  
+    out.write(i);   
+  }   
+  fileInputStream.close();   
+%>
+</body>
+</html>

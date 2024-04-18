@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Home Page - Card Embossing Printing</title>
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<style>.bg-light{
+  	background-color:#E7E8D1 !important;
+  }
+  .card{
+  	background-color:#A7BEAE;
+  }
+  </style>
+<body class="bg-light" th:action="@{/submitForm}"
+		method="post">
+		
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/operation3"></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <span class="nav-link" id="loggedInUsername"></span>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="display-4 mb-3">Welcome to File Transformer App</h1>
+            <p class="lead">Transform your files easily with our amazing file transformer!</p>
+        </div>
+    
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Get Started</h5>
+                        <p class="card-text">Ready to transform your files? Click the button below to begin!</p>
+                        <a href="/operation3/upload" class="btn btn-primary">Upload File</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text">BANKING PERSONALIZATION WORK ORDER</p>
+                        <a href="/operation3/form" class="btn btn-primary">Fill Form</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+    <!-- Bootstrap JS and Popper.js (if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

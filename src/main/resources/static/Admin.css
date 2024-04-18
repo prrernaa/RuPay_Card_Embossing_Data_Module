@@ -1,0 +1,59 @@
+table {
+	border-collapse: collapse;
+	width: 100%;
+	border: 2px solid black; /* Border around the whole table */
+}
+
+th, td {
+	border: 1px solid black; /* Borders around each cell */
+	padding: 8px;
+	text-align: left;
+}
+
+tr {
+	border-bottom: 1px solid black; /* Borders between rows */
+}
+
+tr:last-child {
+	border-bottom: none; /* Remove border from the last row */
+}
+
+th {
+	background-color: lightblue; /* Background color for headers */
+}
+
+.card {
+	/* Set the width of the card */
+	min-width: 1200px;
+	width: calc(100% - 30px);
+	border: 1px solid #ccc; /* Add a border for visual clarity */
+	box-sizing: border-box;
+	position: relative;
+	/* Add position relative to enable center alignment */
+	left: 50%;
+	/* Move the card horizontally to the right by 50% of its container */
+	transform: translateX(-50%);
+}
+
+.card-body {
+	width: 100%; /* Make the card body fill the entire width of the card */
+	height: 100%;
+	/* Make the card body fill the entire height of the card */
+	/* padding: 20px; */
+	/* Add padding for spacing between the content and the card edges */
+	/* You can further customize the size as per your requirement */
+}
+
+body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%; /* Ensure the body takes up the full height of the viewport */
+    }
+    
+    /* Set height of the container div to the full height of the viewport */
+    .container {
+    	
+        height: 100%;	
+    }
+    
+    
